@@ -1,0 +1,66 @@
+from collections import defaultdict
+
+# This class represents a directed graph using
+# adjacency list representation
+class Graph:
+
+    # Constructor
+    def __init__(self, count):
+
+        # default dictionary to store graph
+        self.graph = defaultdict(list)
+        self.count = count
+
+    # function to add an edge to graph
+    def addEdge(self,u,v):
+        self.graph[u].append(v)
+
+    def DFS(self, s, g):
+
+        # Mark all the vertices as not visited
+        visited = [False] * self.count
+
+        # Create a stack for DFS
+        stack = []
+
+        # Mark the source node as
+        # visited and push it
+        stack.insert(0,s)
+        visited[s] = True
+
+        while stack:
+
+            # Pop a vertex from
+            # queue and print it
+            s = stack.pop(0)
+            print (s, end = " ")
+
+            if s == g:
+                print("Goal found.")
+                return 0
+
+            # Get all adjacent vertices of the
+            # Popped vertex s. If a adjacent
+            # has not been visited, then mark it
+            # visited and enqueue it
+            for i in self.graph[s]:
+                if visited[i] == False:
+                    stack.insert(0,i)
+                    visited[i] = True
+
+        print("Search failed.")
+        return 0
+
+
+
+# Driver code
+# Create a graph given in the above diagram
+with open('input.txt', 'rb') as inputFile:
+    count = int(inputFile.readline())
+    a = int(inputFile.readline())
+    b = int(inputFile.readline())
+    g = Graph(count)
+    for i in inputFile.readlines():
+        g.addEdge(int(i.split()[0]), int(i.split()[1]))
+
+g.DFS(a,b)
